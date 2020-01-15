@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ip="<%=ip %>">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>Torrent discard</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <%- include("header.ejs") %>
+    <!--Workplace -->
+    <div class="container">
+        <!-- TEXT -->
+        <div class="py-5 text-center">
+            <h2>Информация про торренты</h2>
+            <p>Тут отображается информация по введенному IP адресу</p>
+            <div class="text-container">
+                <div class="ip">Ваш введенный IP: <%=ip %></div>
+                <div class="country">Страна:<%=geoData.country %></div>
+                <div class="city">Город:<%=geoData.city %></div>
+                <div class="internetProvider">
+                    Провайдер:<%=internetProvider %>
+                </div>
+                <% if(hasPornography){ %>
+                <div class="hasPorn bg-warning">
+                    Скачивает порно
+                </div>
+                <%}%>
+          <% if(hasChildPornography){ %>
+                <div class="hasChildPorn bg-danger">
+                    Скачивает детское порно
+                </div>
+                <%}%>
+        </div>
+        <div class="exampleOfContainer" id="style-3"></div>
+      </div>
+      <!-- FORM -->
+      <form class="workplace">
+        <div class="form-row">
+          <!-- col-md-12 col-sm-12 -->
+          <div class="form-group col-12 order-sm-first order-first">
+            <h3>Торренты</h3>
+            <div class="form-group">
+              <table
+                class="table table-bordered col-md-12  col-xm-6 table-hover table-responsive-sm table-responsive-md table-responsive-lg"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Тип</th>
+                    <th scope="col">Размер</th>
+                    <th scope="col">Последнее скачивание</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <% if(content.length==0){%>
+                <tr class="table-danger">
+                    <th scope="row">1</th>
+                    <td class="name-of-torrent">За вашим IP торрентов не обнаружено</td>
+                    <td>empty</td>
+                    <td>empty</td>
+                    <td>empty</td>
+                </tr>
+                <% }%>
+                <% for(let i=0; i<content.length;i++) {%>
+                <% if(content[i].type=="Порно"){ %>
+                <tr class="table-warning">
+                    <%}else if(content[i].type=="Детское порно") {%>
+                <tr class="table-danger">
+                    <%}else {%>
+                <tr>
+                    <%}%>
+                  <th scope="row"><%=i+1 %></th>
+                    <td class="name-of-torrent"><%=content[i].name %></td>
+                    <td><%=content[i].type %></td>
+                    <td><%=content[i].size %></td>
+                    <td><%=content[i].lastData %></td>
+                </tr>
+                <%} %>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </form>
+    </div>
+    <%- include("footer.ejs") %>
+    
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+header {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.container {
+  margin-top: 75px;
+}
+.container.csv {
+  margin-top: 110px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-top: 180px;
+  }
+  .container.csv {
+    margin-top: 200px;
+  }
+  .container.documentation {
+    margin-top: 150px;
+  }
+}
+
+.name-of-torrent {
+  color: #337ab7;
+}
+th,
+td {
+  /* user-select: none; */
+}
+.container .text-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container .text-container div {
+  margin: 1px;
+  height: 100%;
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  background-color: #337ab7;
+  /* background-color: #007bff; */
+  /* background: red; */
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+pre,
+.pre-content {
+  /* border-radius: 2.5%; */
+  background: rgb(231, 226, 226);
+}
+
+.form-control {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+/* footer {
+  position: fixed;
+  top: 90%;
+  left: 50%;
+  transform: translate(-90%, 0);
+} */
+.page-404 {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}

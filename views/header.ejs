@@ -1,0 +1,32 @@
+<header>
+  <div
+    class="header-class d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm"
+  >
+    <h5 class="my-0 mr-md-auto font-weight-normal">
+      <a href="../">Torrent info</a>
+      <span>(by revolman)</span>
+    </h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-dark" href="/">Главная</a>
+      <a class="p-2 text-dark" href="/api">API</a>
+      <a class="p-2 text-dark" href="/csvupload">CSV Operataion</a>
+    </nav>
+    <div class="btn-group" role="group">
+      <form class="btn-group" action="/ip" method="get">
+        <input
+          name="ip"
+          type="text"
+          class="form-control disable-user-select input-IP"
+          id="inputIP"
+          placeholder="IP Address"
+        />
+        <button
+          type="submit"
+          class="btn btn-primary col-sm-12 col-md-6 col-lg-4 col-xl-4"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,45 @@
+ngrok http 8080
+
+
+массив адрессов 
+
+fetch("https://api.antitor.com/history/peers?cidr=188.163.96.0/24&key=412dd6e7b3ec48d089d8e744298dfb2d") .then(response => response.json()).then(commits =>console.log(commits))
+
+let data=[]
+for(let i=0;i<256;i++){
+fetch("http://131f4a8d.ngrok.io/api/getOneIp?ip=188.163.96."+i+"&token=revolman").then(response => response.json()).then(commits =>{
+console.log(i)
+    if(commits.hasChildPornography)
+        data.push(commits)
+})
+
+}
+
+
+let data=[]
+
+for(let i=0;i<=255;i++){
+
+fetch("https://api.antitor.com/history/peer/?ip=188.163.96."+i+"&key=412dd6e7b3ec48d089d8e744298dfb2d") .then(response => response.json()).then(commits =>{
+
+console.log(i)
+if(commits.hasChildPorno)
+    data.push(commits)
+
+})
+
+}
+
+let data=[]
+
+for(let i=0;i<=255;i++){
+
+fetch("https://api.antitor.com/history/peer/?ip=188.163.93."+i+"&key=412dd6e7b3ec48d089d8e744298dfb2d") .then(response => response.json()).then(commits =>{
+
+console.log(i)
+if(commits.hasChildPorno)
+    data.push(commits)
+
+})
+
+}

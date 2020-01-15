@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" ip="<%=ip %>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>Torrent discard</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <%- include("header.ejs") %>
+    <!--Workplace -->
+    <div class="container">
+      <div class="head">
+        <h1>Torrent info documentation</h1>
+        <ol>
+          <li><a href="">Description</a></li>
+          <li>
+            <a href="">Connectivity</a>
+            <ol>
+              <li>
+                <a href="">Get info about one IP</a>
+                <ol>
+                  <li><a href="">GET</a></li>
+                  <li><a href="">POST</a></li>
+                </ol>
+              </li>
+              <li>
+                <a href="">Get info about many IP</a>
+                <ol>
+                  <li><a href="">GET</a></li>
+                  <li><a href="">POST</a></li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+        <hr />
+      </div>
+      <div class="discription">
+        <h2>1. Description</h2>
+        <p>
+          This document is intended to serve software developers as an
+          implementation guide for integration with Torrent Page API.
+        </p>
+        <p>
+          This API which provides historical data of downloading and sharing
+          content using the BitTorrent protocol. Historical data is based on
+          data from
+          <a href="http://www.bittorrent.org/beps/bep_0005.html">DHT</a> network
+          and in rare cases can be inaccurate. Facts from Peer API cannot be
+          used as evidence. Usually we need up to 3 hours to include newly data
+          to our Storage.
+        </p>
+        <hr />
+      </div>
+      <div class="connectivity">
+        <h2>2. Connectivity</h2>
+        <div class="one-ip" style="margin-left: 40px;">
+          <h5>2.1. Get info about one IP</h5>
+          <p>You can get IP history by HTTP GET request:</p>
+          <pre>https://{host}/api/getOneIp?ip={ip}&token={key}</pre>
+          <p>where</p>
+          <ul>
+            <li>
+              <span class="pre-content">host</span> - hostname, will be
+              provided.
+            </li>
+            <li>
+              <span class="pre-content">ip</span> - ip address which history you
+              want to receive.
+            </li>
+            <li>
+              <span class="pre-content">key</span> - API Key. Nickname of the
+              Author .
+            </li>
+            <p>response</p>
+          </ul>
+        </div>
+        <pre style="margin:0 auto;">
+                {
+                    "ip": "200.55.191.39",
+                    "isp": "Empresa de Telecomunicaciones de Cuba, S.A.",
+                    "hasPorno": false,
+                    "hasChildPorno": false,
+                    "geoData": {
+                    "country": "Cuba",
+                    "city": "Havana",
+                    "latitude": 23.13302,
+                    "longitude": -82.38304
+                   },
+                    "contents": [
+                      {
+                      "category": "Movies",
+                      "name": "Si Da Ming Bu 3 (2014) HDRip",
+                      "lastData": "2016-12-10T16:49:04.000Z",
+                       },
+                      {
+                      "category": "Music",
+                      "name": "Stardust - Music Sounds Better With You (1999) 192kbps [PsychO_Path].mp3",
+                      "lastData": "2016-12-10T16:49:04.000Z",
+                      }
+                    ]
+                  }</pre
+        >
+      </div>
+    </div>
+    <%- include("footer.ejs") %>
+  </body>
+</html>
