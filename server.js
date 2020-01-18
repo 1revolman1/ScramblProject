@@ -5,16 +5,15 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const csv = require("csv-parser");
 const fs = require("fs");
+const ngrok = require("ngrok");
+const mongoose = require("mongoose");
 
 const app = express();
 const server = require("http").createServer(app);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 let port = 8080;
-
-server.listen(port, function() {
-  console.log("listening on: " + port);
-});
+// let globalServerLink = "";
 
 //Настройка загрузки файлов
 const storageConfig = multer.diskStorage({
@@ -34,6 +33,53 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: storageConfig, fileFilter: fileFilter });
 
+//Настройка базы данных
+const Schema = mongoose.Schema;
+
+// установка схемы
+const userScheme = new Schema(
+  {
+    ip: String,
+    creationDate: String,
+    internetProvider: String,
+    hasPornography: Boolean,
+    hasChildPornography: Boolean,
+    geoData: Object,
+    content: Object
+  },
+  { versionKey: false }
+);
+const User = mongoose.model("User", userScheme);
+// (async function() {
+//   const url = await ngrok.connect(port);
+//   globalServerLink = url;
+//   mongoose.connect(
+//     "mongodb://localhost:27017/usersipdatabase",
+//     { useNewUrlParser: true },
+//     function(err) {
+//       if (err) return console.log(err);
+//       server.listen(port, function() {
+//         console.log(
+//           `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server: ${url}`
+//         );
+//       });
+//     }
+//   );
+// })();
+
+mongoose.connect(
+  "mongodb://localhost:27017/usersipdatabase",
+  { useNewUrlParser: true },
+  function(err) {
+    if (err) return console.log(err);
+    server.listen(port, function() {
+      console.log(
+        `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+      );
+    });
+  }
+);
+
 //Роутинг
 
 // https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
@@ -44,10 +90,7 @@ app.post("/csvupload/upload", upload.single("filedata"), function(
 ) {
   let csv_results = [];
   let filedata = request.file;
-  // console.log(filedata);
-  console.log(filedata.originalname);
   if (!filedata) respons.render("404.ejs");
-  // else respons.redirect("/csvupload");
   fs.createReadStream(`./uploads/${filedata.originalname}`)
     .pipe(
       csv({
@@ -55,24 +98,16 @@ app.post("/csvupload/upload", upload.single("filedata"), function(
         mapHeaders: ({ header, index }) => header.replace(/\s/g, "")
       })
     )
-    .on("data", data => {
-      if (data.Key != "") csv_results.push(data);
+    .on("data", function(csv_content) {
+      if (csv_content.Key != "") {
+        csv_content.creationDate = new Date().toLocaleDateString();
+        csv_results.push(csv_content);
+      }
     })
     .on("end", () => {
       fs.unlinkSync(`./uploads/${filedata.originalname}`);
-      // console.log(csv_results);
       respons.render("datacsvupload.ejs", { content: csv_results });
     });
-});
-app.get("/datacsvupload", function(request, respons) {
-  let ip =
-    request.headers["x-forwarded-for"] ||
-    request.connection.remoteAddress ||
-    request.socket.remoteAddress ||
-    (request.connection.socket
-      ? request.connection.socket.remoteAddress
-      : null);
-  respons.render("datacsvupload.ejs", { ip: ip });
 });
 
 app.get("/", urlencodedParser, async function(request, respons) {
@@ -83,7 +118,10 @@ app.get("/", urlencodedParser, async function(request, respons) {
     (request.connection.socket
       ? request.connection.socket.remoteAddress
       : null);
+  // ip = "192.192.192.192";
   let information = {};
+  information.creationDate = new Date().toLocaleDateString();
+  // information.creationDate = new Date();
   await axios
     .get(`http://ip-api.com/json/${ip}`)
     .then(response => {
@@ -104,7 +142,6 @@ app.get("/", urlencodedParser, async function(request, respons) {
   await axios
     .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip}`)
     .then(response => {
-      // console.log(getData(response.data));
       let torrent_info = getData(response.data);
       information.content = torrent_info;
       for (let i = 0; i < information.content.length; i++) {
@@ -125,6 +162,29 @@ app.get("/", urlencodedParser, async function(request, respons) {
     " - ",
     information.geoData.city
   );
+  // Перед поиском зависимостей в базе данных
+  User.findOne({ ip: information.ip }, function(err, user) {
+    // Поиск элемента!
+    if (err) return console.log(err);
+    if (!user) {
+      // Отсутствие элемента и создание нового
+      const newUser = new User(information);
+      newUser.save(function(err) {
+        if (err) return console.log(err);
+      });
+    } else if (
+      user.creationDate.split(".")[1] != information.creationDate.split(".")[1]
+    ) {
+      //  Необходимо обновить информацию про элемент!
+      user.creationDate = information.creationDate;
+      user.content = information.content;
+      user.hasChildPornography = information.hasChildPornography;
+      user.hasPornography = information.hasPornography;
+      user.save(function(err) {
+        if (err) return handleError(err); // сохранили!
+      });
+    }
+  });
   respons.render("index.ejs", information);
 });
 
@@ -178,10 +238,11 @@ app.use("/ip", urlencodedParser, async function(request, respons) {
     `Присоединился пользователь ${ip} и смотрит чужой IP: `,
     ip_to_find
   );
+  information.creationDate = new Date().toLocaleDateString();
   respons.render("ip.ejs", information);
 });
 
-//http://131f4a8d.ngrok.io/api/getOneIp?ip=188.163.96.186&token=tom
+// http://131f4a8d.ngrok.io/api/getOneIp?ip=188.163.96.186&token=tom
 app.get("/api/getOneIp", async function(request, respons) {
   let ip_to_find,
     token = "revolman";
@@ -236,6 +297,7 @@ app.get("/api/getOneIp", async function(request, respons) {
     .catch(error => {
       console.log(error);
     });
+  information.creationDate = new Date().toLocaleDateString();
   console.log(
     "Пользователь c IP запросил информацию через GET: ",
     ip,
@@ -245,7 +307,6 @@ app.get("/api/getOneIp", async function(request, respons) {
     information.geoData.city
   );
   respons.send(JSON.stringify(information, null, 3));
-  // console.log(request.query.token + " - " + request.query.ip);
 });
 app.get("/api", function(request, respons) {
   let ip =
@@ -255,7 +316,7 @@ app.get("/api", function(request, respons) {
     (request.connection.socket
       ? request.connection.socket.remoteAddress
       : null);
-  respons.render("api.ejs", { ip: ip });
+  respons.render("api.ejs", { ip: ip, url: "url" });
 });
 
 app.get("/csvupload", function(request, respons) {
@@ -268,8 +329,6 @@ app.get("/csvupload", function(request, respons) {
       : null);
   respons.render("csvupload.ejs", { ip: ip });
 });
-
-app.listen(3000);
 
 //Обработчики
 app.use("/public", express.static("public"));
