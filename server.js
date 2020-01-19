@@ -239,6 +239,29 @@ app.use("/ip", urlencodedParser, async function(request, respons) {
     ip_to_find
   );
   information.creationDate = new Date().toLocaleDateString();
+
+  User.findOne({ ip: information.ip }, function(err, user) {
+    // Поиск элемента!
+    if (err) return console.log(err);
+    if (!user) {
+      // Отсутствие элемента и создание нового
+      const newUser = new User(information);
+      newUser.save(function(err) {
+        if (err) return console.log(err);
+      });
+    } else if (
+      user.creationDate.split(".")[1] != information.creationDate.split(".")[1]
+    ) {
+      //  Необходимо обновить информацию про элемент!
+      user.creationDate = information.creationDate;
+      user.content = information.content;
+      user.hasChildPornography = information.hasChildPornography;
+      user.hasPornography = information.hasPornography;
+      user.save(function(err) {
+        if (err) return handleError(err); // сохранили!
+      });
+    }
+  });
   respons.render("ip.ejs", information);
 });
 
@@ -306,7 +329,31 @@ app.get("/api/getOneIp", async function(request, respons) {
     " - ",
     information.geoData.city
   );
-  respons.send(JSON.stringify(information, null, 3));
+  if (token == "revolman")
+    User.findOne({ ip: information.ip }, function(err, user) {
+      // Поиск элемента!
+      if (err) return console.log(err);
+      if (!user) {
+        // Отсутствие элемента и создание нового
+        const newUser = new User(information);
+        newUser.save(function(err) {
+          if (err) return console.log(err);
+        });
+      } else if (
+        user.creationDate.split(".")[1] !=
+        information.creationDate.split(".")[1]
+      ) {
+        //  Необходимо обновить информацию про элемент!
+        user.creationDate = information.creationDate;
+        user.content = information.content;
+        user.hasChildPornography = information.hasChildPornography;
+        user.hasPornography = information.hasPornography;
+        user.save(function(err) {
+          if (err) return handleError(err); // сохранили!
+        });
+      }
+    });
+  respons.json(information);
 });
 app.get("/api", function(request, respons) {
   let ip =
@@ -333,6 +380,8 @@ app.get("/csvupload", function(request, respons) {
 //Обработчики
 app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
+app.set("json spaces", 40);
+
 //Обработка страницы 404
 app.use(function(req, res, next) {
   res.status(404).render("404.ejs");
