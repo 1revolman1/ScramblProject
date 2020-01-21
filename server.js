@@ -13,7 +13,6 @@ const server = require("http").createServer(app);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 let port = 8080;
-// let globalServerLink = "";
 
 //Настройка загрузки файлов
 const storageConfig = multer.diskStorage({
@@ -24,6 +23,7 @@ const storageConfig = multer.diskStorage({
     cb(null, file.originalname);
   }
 });
+//Фильтрация файлов на уровне сервера
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "application/vnd.ms-excel") {
     cb(null, true);
@@ -118,10 +118,8 @@ app.get("/", urlencodedParser, async function(request, respons) {
     (request.connection.socket
       ? request.connection.socket.remoteAddress
       : null);
-  // ip = "192.192.192.192";
   let information = {};
   information.creationDate = new Date().toLocaleDateString();
-  // information.creationDate = new Date();
   await axios
     .get(`http://ip-api.com/json/${ip}`)
     .then(response => {
@@ -364,6 +362,16 @@ app.get("/api", function(request, respons) {
       ? request.connection.socket.remoteAddress
       : null);
   respons.render("api.ejs", { ip: ip, url: "url" });
+});
+app.get("/admin", function(request, respons) {
+  let ip =
+    request.headers["x-forwarded-for"] ||
+    request.connection.remoteAddress ||
+    request.socket.remoteAddress ||
+    (request.connection.socket
+      ? request.connection.socket.remoteAddress
+      : null);
+  respons.render("admin.ejs", { ip: ip, url: "url" });
 });
 
 app.get("/csvupload", function(request, respons) {

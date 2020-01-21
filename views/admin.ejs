@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="admin-panel" lang="en" ip="<%=ip %>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/public/css/style.css" />
+
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+
+    <title>Torrent discard</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <%- include("header.ejs") %>
+    <!--Workplace -->
+    <div class="container">
+      <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <!-- Tabs Titles -->
+
+          <!-- Icon -->
+          <div class="fadeIn first">
+            <img
+              src="/public/image/github-logo.svg"
+              style="width:45px; height:45px;"
+              id="icon"
+              alt="User Icon"
+            />
+          </div>
+
+          <!-- Login Form -->
+          <form>
+            <input
+              type="text"
+              id="login"
+              class="fadeIn second"
+              name="login"
+              placeholder="login"
+            />
+            <input
+              type="text"
+              id="password"
+              class="fadeIn third"
+              name="login"
+              placeholder="password"
+            />
+            <input type="submit" class="fadeIn fourth" value="Log In" />
+          </form>
+
+          <!-- Remind Passowrd -->
+          <div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include("footer.ejs") %>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </body>
+</html>
