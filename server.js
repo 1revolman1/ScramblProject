@@ -50,35 +50,38 @@ const userScheme = new Schema(
   { versionKey: false }
 );
 const User = mongoose.model("User", userScheme);
-// (async function() {
-//   const url = await ngrok.connect(port);
-//   globalServerLink = url;
-//   mongoose.connect(
-//     "mongodb://localhost:27017/usersipdatabase",
-//     { useNewUrlParser: true },
-//     function(err) {
-//       if (err) return console.log(err);
-//       server.listen(port, function() {
-//         console.log(
-//           `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server: ${url}`
-//         );
-//       });
-//     }
-//   );
-// })();
 
-mongoose.connect(
-  "mongodb://localhost:27017/usersipdatabase",
-  { useNewUrlParser: true },
-  function(err) {
-    if (err) return console.log(err);
-    server.listen(port, function() {
-      console.log(
-        `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
-      );
-    });
-  }
-);
+(async function() {
+  const url = await ngrok.connect(port);
+  const apiUrl = ngrok.getUrl();
+  console.log(apiUrl);
+  mongoose.connect(
+    "mongodb://localhost:27017/usersipdatabase",
+    { useNewUrlParser: true },
+    function(err) {
+      if (err) return console.log(err);
+      server.listen(port, function() {
+        console.log(
+          `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server: ${url}`
+        );
+      });
+    }
+  );
+})();
+
+// mongoose.connect(
+//   "mongodb://localhost:27017/usersipdatabase",
+//   { useNewUrlParser: true },
+//   function(err) {
+//    url="";
+//     if (err) return console.log(err);
+//     server.listen(port, function() {
+//       console.log(
+//         `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+//       );
+//     });
+//   }
+// );
 
 //Роутинг
 
@@ -111,6 +114,7 @@ app.post("/csvupload/upload", upload.single("filedata"), function(
 });
 
 app.get("/", urlencodedParser, async function(request, respons) {
+  console.log(ngrok.getUrl());
   let ip =
     request.headers["x-forwarded-for"] ||
     request.connection.remoteAddress ||
@@ -361,7 +365,8 @@ app.get("/api", function(request, respons) {
     (request.connection.socket
       ? request.connection.socket.remoteAddress
       : null);
-  respons.render("api.ejs", { ip: ip, url: "url" });
+  console.log(url);
+  respons.render("api.ejs", { ip: ip, url: url });
 });
 app.get("/admin", function(request, respons) {
   let ip =
@@ -371,7 +376,7 @@ app.get("/admin", function(request, respons) {
     (request.connection.socket
       ? request.connection.socket.remoteAddress
       : null);
-  respons.render("admin.ejs", { ip: ip, url: "url" });
+  respons.render("admin.ejs", { ip: ip });
 });
 
 app.get("/csvupload", function(request, respons) {

@@ -138,7 +138,7 @@ pre,
   -webkit-border-radius: 0 0 10px 10px;
   border-radius: 0 0 10px 10px;
 }
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 480px) {
   .fadeIn {
     padding: 15px 30px !important;
   }
