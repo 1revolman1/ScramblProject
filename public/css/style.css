@@ -80,10 +80,10 @@ pre,
   /* background-color: #56baed; */
 }
 .admin-panel .container {
-  margin-top: 200px;
+  /* margin-top: 200px; */
 }
 .admin-panel body {
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   height: 100vh;
 }
 
@@ -196,7 +196,8 @@ pre,
   transform: scale(0.95);
 }
 
-.admin-panel input[type="text"] {
+.admin-panel input[type="text"],
+.admin-panel input[type="password"] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
@@ -217,12 +218,14 @@ pre,
   border-radius: 5px 5px 5px 5px;
 }
 
-.admin-panel input[type="text"]:focus {
+.admin-panel input[type="text"]:focus,
+.admin-panel input[type="password"]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
 
-.admin-panel input[type="text"]:placeholder {
+.admin-panel input[type="text"]:placeholder,
+.admin-panel input[type="password"]:placeholder {
   color: #cccccc;
 }
 

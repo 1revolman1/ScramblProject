@@ -17,11 +17,15 @@
       rel="stylesheet"
       id="bootstrap-css"
     />
-
+    <link
+      rel="shortcut icon"
+      href="/public/image/favicon.ico"
+      type="image/x-icon"
+    />
     <title>Torrent discard</title>
   </head>
 
-  <body>
+  <body class="admin">
     <!-- Header -->
     <%- include("header.ejs") %>
     <!--Workplace -->
@@ -41,6 +45,7 @@
           </div>
 
           <!-- Login Form -->
+          <!-- action="/admin" method="post" -->
           <form>
             <input
               type="text"
@@ -48,15 +53,21 @@
               class="fadeIn second"
               name="login"
               placeholder="login"
+              required
             />
             <input
-              type="text"
+              type="password"
               id="password"
               class="fadeIn third"
-              name="login"
+              name="password"
               placeholder="password"
+              required
             />
-            <input type="submit" class="fadeIn fourth" value="Log In" />
+            <input
+              type="submit"
+              class="fadeIn button-submit fourth"
+              value="Log In"
+            />
           </form>
 
           <!-- Remind Passowrd -->

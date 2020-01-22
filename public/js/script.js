@@ -9,6 +9,25 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
   }
+  if (document.querySelectorAll(".admin").length > 0) {
+    document
+      .querySelector(".button-submit")
+      .addEventListener("click", function(event) {
+        event.preventDefault();
+        if (
+          document.querySelector(".second").value != "" &&
+          document.querySelector(".third").value != ""
+        ) {
+          let login = document.querySelector(".second").value;
+          let password = document.querySelector(".third").value;
+          fetch("/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ login: login, password: password })
+          }).then(res => (document.location.href = "/admin/panel"));
+        }
+      });
+  }
   //   if (document.querySelectorAll(".csv-uploaded").length > 0) {
   //   }
 });
