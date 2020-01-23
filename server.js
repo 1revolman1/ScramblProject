@@ -51,7 +51,15 @@ const userScheme = new Schema(
   },
   { versionKey: false }
 );
+const admin = new Schema(
+  {
+    login: String,
+    password: String
+  },
+  { versionKey: false }
+);
 const User = mongoose.model("User", userScheme);
+const Admin = mongoose.model("Admin", admin);
 
 // (async function() {
 //   const url = await ngrok.connect(port);
@@ -383,7 +391,38 @@ app.get("/admin", function(request, respons) {
 app.post("/admin", function(request, response) {
   if (!request.body) return response.sendStatus(400);
   console.log(request.body);
-  response.sendStatus(200);
+  mongoose.connect(
+    "mongodb://localhost:27017/adminsofproject",
+    { useNewUrlParser: true },
+    function(err) {
+      if (err) return console.log(err);
+      Admin.findOne(
+        { login: request.body.login, password: request.body.password },
+        function(err, user) {
+          // Поиск элемента!
+          if (err) return console.log(err);
+          if (user) {
+            console.log(user);
+            response.sendStatus(200);
+          } else {
+            response.sendStatus(404);
+          }
+          // console.log(user);
+          // if (!user) {
+          //   // Отсутствие элемента и создание нового
+          //   const newAdmin = new Admin({
+          //     login: request.body.login,
+          //     password: request.body.password
+          //   });
+          //   newAdmin.save(function(err) {
+          //     if (err) return console.log(err);
+          //   });
+          // }
+        }
+      );
+    }
+  );
+  // response.sendStatus(200);
 });
 app.get("/admin/panel", function(request, respons) {
   let ip =

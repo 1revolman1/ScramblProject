@@ -24,7 +24,13 @@ document.addEventListener("DOMContentLoaded", function() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ login: login, password: password })
-          }).then(res => (document.location.href = "/admin/panel"));
+          }).then(res => {
+            if (res.ok) {
+              document.location.href = "/admin/panel";
+            } else {
+              document.location.href = "/404";
+            }
+          });
         }
       });
   }
