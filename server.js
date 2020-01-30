@@ -51,15 +51,7 @@ const userScheme = new Schema(
   },
   { versionKey: false }
 );
-const admin = new Schema(
-  {
-    login: String,
-    password: String
-  },
-  { versionKey: false }
-);
 const User = mongoose.model("User", userScheme);
-const Admin = mongoose.model("Admin", admin);
 
 // (async function() {
 //   const url = await ngrok.connect(port);
@@ -79,20 +71,11 @@ const Admin = mongoose.model("Admin", admin);
 //   );
 // })();
 
-mongoose.connect(
-  "mongodb://localhost:27017/usersipdatabase",
-  { useNewUrlParser: true },
-  function(err) {
-    url = "";
-    if (err) return console.log(err);
-    server.listen(port, function() {
-      console.log(
-        `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
-      );
-    });
-  }
-);
-
+server.listen(port, function() {
+  console.log(
+    `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+  );
+});
 //Роутинг
 
 // https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
@@ -174,29 +157,38 @@ app.get("/", async function(request, respons) {
     " - ",
     information.geoData.city
   );
-  // Перед поиском зависимостей в базе данных
-  User.findOne({ ip: information.ip }, function(err, user) {
-    // Поиск элемента!
-    if (err) return console.log(err);
-    if (!user) {
-      // Отсутствие элемента и создание нового
-      const newUser = new User(information);
-      newUser.save(function(err) {
+  mongoose.connect(
+    "mongodb://localhost:27017/usersipdatabase",
+    { useNewUrlParser: true },
+    function(err) {
+      if (err) return console.log(err);
+      // Перед поиском зависимостей в базе данных
+      User.findOne({ ip: information.ip }, function(err, user) {
+        // Поиск элемента!
         if (err) return console.log(err);
-      });
-    } else if (
-      user.creationDate.split(".")[1] != information.creationDate.split(".")[1]
-    ) {
-      //  Необходимо обновить информацию про элемент!
-      user.creationDate = information.creationDate;
-      user.content = information.content;
-      user.hasChildPornography = information.hasChildPornography;
-      user.hasPornography = information.hasPornography;
-      user.save(function(err) {
-        if (err) return handleError(err); // сохранили!
+        if (!user) {
+          // Отсутствие элемента и создание нового
+          const newUser = new User(information);
+          newUser.save(function(err) {
+            if (err) return console.log(err);
+          });
+        } else if (
+          user.creationDate.split(".")[1] !=
+          information.creationDate.split(".")[1]
+        ) {
+          //  Необходимо обновить информацию про элемент!
+          user.creationDate = information.creationDate;
+          user.content = information.content;
+          user.hasChildPornography = information.hasChildPornography;
+          user.hasPornography = information.hasPornography;
+          user.save(function(err) {
+            if (err) return handleError(err); // сохранили!
+          });
+        }
       });
     }
-  });
+  );
+
   respons.render("index.ejs", information);
 });
 
@@ -251,29 +243,37 @@ app.use("/ip", async function(request, respons) {
     ip_to_find
   );
   information.creationDate = new Date().toLocaleDateString();
-
-  User.findOne({ ip: information.ip }, function(err, user) {
-    // Поиск элемента!
-    if (err) return console.log(err);
-    if (!user) {
-      // Отсутствие элемента и создание нового
-      const newUser = new User(information);
-      newUser.save(function(err) {
+  mongoose.connect(
+    "mongodb://localhost:27017/usersipdatabase",
+    { useNewUrlParser: true },
+    function(err) {
+      if (err) return console.log(err);
+      // Перед поиском зависимостей в базе данных
+      User.findOne({ ip: information.ip }, function(err, user) {
+        // Поиск элемента!
         if (err) return console.log(err);
-      });
-    } else if (
-      user.creationDate.split(".")[1] != information.creationDate.split(".")[1]
-    ) {
-      //  Необходимо обновить информацию про элемент!
-      user.creationDate = information.creationDate;
-      user.content = information.content;
-      user.hasChildPornography = information.hasChildPornography;
-      user.hasPornography = information.hasPornography;
-      user.save(function(err) {
-        if (err) return handleError(err); // сохранили!
+        if (!user) {
+          // Отсутствие элемента и создание нового
+          const newUser = new User(information);
+          newUser.save(function(err) {
+            if (err) return console.log(err);
+          });
+        } else if (
+          user.creationDate.split(".")[1] !=
+          information.creationDate.split(".")[1]
+        ) {
+          //  Необходимо обновить информацию про элемент!
+          user.creationDate = information.creationDate;
+          user.content = information.content;
+          user.hasChildPornography = information.hasChildPornography;
+          user.hasPornography = information.hasPornography;
+          user.save(function(err) {
+            if (err) return handleError(err); // сохранили!
+          });
+        }
       });
     }
-  });
+  );
   respons.render("ip.ejs", information);
 });
 
@@ -341,30 +341,39 @@ app.get("/api/getOneIp", async function(request, respons) {
     " - ",
     information.geoData.city
   );
-  if (token == "revolman")
-    User.findOne({ ip: information.ip }, function(err, user) {
-      // Поиск элемента!
+  mongoose.connect(
+    "mongodb://localhost:27017/usersipdatabase",
+    { useNewUrlParser: true },
+    function(err) {
       if (err) return console.log(err);
-      if (!user) {
-        // Отсутствие элемента и создание нового
-        const newUser = new User(information);
-        newUser.save(function(err) {
+      // Перед поиском зависимостей в базе данных
+      if (token == "revolman")
+        User.findOne({ ip: information.ip }, function(err, user) {
+          // Поиск элемента!
           if (err) return console.log(err);
+          if (!user) {
+            // Отсутствие элемента и создание нового
+            const newUser = new User(information);
+            newUser.save(function(err) {
+              if (err) return console.log(err);
+            });
+          } else if (
+            user.creationDate.split(".")[1] !=
+            information.creationDate.split(".")[1]
+          ) {
+            //  Необходимо обновить информацию про элемент!
+            user.creationDate = information.creationDate;
+            user.content = information.content;
+            user.hasChildPornography = information.hasChildPornography;
+            user.hasPornography = information.hasPornography;
+            user.save(function(err) {
+              if (err) return handleError(err); // сохранили!
+            });
+          }
         });
-      } else if (
-        user.creationDate.split(".")[1] !=
-        information.creationDate.split(".")[1]
-      ) {
-        //  Необходимо обновить информацию про элемент!
-        user.creationDate = information.creationDate;
-        user.content = information.content;
-        user.hasChildPornography = information.hasChildPornography;
-        user.hasPornography = information.hasPornography;
-        user.save(function(err) {
-          if (err) return handleError(err); // сохранили!
-        });
-      }
-    });
+    }
+  );
+
   respons.json(information);
 });
 app.get("/api", function(request, respons) {
@@ -391,38 +400,7 @@ app.get("/admin", function(request, respons) {
 app.post("/admin", function(request, response) {
   if (!request.body) return response.sendStatus(400);
   console.log(request.body);
-  mongoose.connect(
-    "mongodb://localhost:27017/adminsofproject",
-    { useNewUrlParser: true },
-    function(err) {
-      if (err) return console.log(err);
-      Admin.findOne(
-        { login: request.body.login, password: request.body.password },
-        function(err, user) {
-          // Поиск элемента!
-          if (err) return console.log(err);
-          if (user) {
-            console.log(user);
-            response.sendStatus(200);
-          } else {
-            response.sendStatus(404);
-          }
-          // console.log(user);
-          // if (!user) {
-          //   // Отсутствие элемента и создание нового
-          //   const newAdmin = new Admin({
-          //     login: request.body.login,
-          //     password: request.body.password
-          //   });
-          //   newAdmin.save(function(err) {
-          //     if (err) return console.log(err);
-          //   });
-          // }
-        }
-      );
-    }
-  );
-  // response.sendStatus(200);
+  response.sendStatus(200);
 });
 app.get("/admin/panel", function(request, respons) {
   let ip =
