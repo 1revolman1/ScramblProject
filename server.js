@@ -9,13 +9,14 @@ const ngrok = require("ngrok");
 const mongoose = require("mongoose");
 
 const app = express();
-const server = require("http").createServer(app);
+
 //Возможность парсить JSON на сервере
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 let port = 8080;
+url = "https://550462df.ngrok.io";
 
 //Настройка загрузки файлов
 const storageConfig = multer.diskStorage({
@@ -81,11 +82,23 @@ const Admin = mongoose.model("Admin", admin);
 //   );
 // })();
 
-server.listen(port, function() {
-  console.log(
-    `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+const run = async () => {
+  await app.listen(port, () =>
+    console.log(
+      `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+    )
   );
-});
+};
+
+// server.listen(port, function() {
+//   console.log(
+//     `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
+//   );
+// });
+// app.listen(8080, () =>
+//   console.log(`Example app listening on port 8080!`)
+// );
+
 //Роутинг
 
 // https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
@@ -495,3 +508,5 @@ let getData = html => {
   });
   return data;
 };
+
+run();
