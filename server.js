@@ -53,33 +53,6 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: storageConfig, fileFilter: fileFilter });
 
-// //Настройка базы данных
-// const Schema = mongoose.Schema;
-
-// // установка схемы
-// const userScheme = new Schema(
-//   {
-//     ip: String,
-//     creationDate: String,
-//     internetProvider: String,
-//     hasPornography: Boolean,
-//     hasChildPornography: Boolean,
-//     geoData: Object,
-//     content: Object
-//   },
-//   { versionKey: false }
-// );
-// const admin = new Schema(
-//   {
-//     login: String,
-//     password: String
-//   },
-//   { versionKey: false }
-// );
-
-// const User = mongoose.model("User", userScheme);
-// const Admin = mongoose.model("Admin", admin);
-
 // (async function() {
 //   const url = await ngrok.connect(port);
 //   const apiUrl = ngrok.getUrl();
@@ -105,15 +78,6 @@ const run = async () => {
     )
   );
 };
-
-// server.listen(port, function() {
-//   console.log(
-//     `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
-//   );
-// });
-// app.listen(8080, () =>
-//   console.log(`Example app listening on port 8080!`)
-// );
 
 //Роутинг
 
