@@ -63,6 +63,29 @@ module.exports = {
         });
       }
     );
+  },
+  adminDBFunc: function(request) {
+    mongoose.connect(
+      "mongodb://localhost:27017/usersipdatabase",
+      { useNewUrlParser: true },
+      function(err) {
+        if (err) return console.log(err);
+        Admin.findOne(
+          { login: request.body.login, password: request.body.password },
+          function(err, user) {
+            // Поиск элемента!
+            if (err) return console.log(err);
+            if (user) {
+              // response.render("panel.ejs", { ip: ip });
+              return 200;
+            } else {
+              // response.redirect("/admin");
+              return 400;
+            }
+          }
+        );
+      }
+    );
   }
 };
 // module.exports = User;
