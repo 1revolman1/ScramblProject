@@ -22,7 +22,9 @@ const ngrok = require("ngrok");
 const mongoose = require("mongoose");
 const io = require("socket.io");
 
-const functions = require("./controllers/functions.js");
+const ipRouter = require("./routes/ipRouter.js");
+
+// const functions = require("./controllers/functions.js");
 const app = express();
 
 //Возможность парсить JSON на сервере
@@ -51,32 +53,32 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage: storageConfig, fileFilter: fileFilter });
 
-//Настройка базы данных
-const Schema = mongoose.Schema;
+// //Настройка базы данных
+// const Schema = mongoose.Schema;
 
-// установка схемы
-const userScheme = new Schema(
-  {
-    ip: String,
-    creationDate: String,
-    internetProvider: String,
-    hasPornography: Boolean,
-    hasChildPornography: Boolean,
-    geoData: Object,
-    content: Object
-  },
-  { versionKey: false }
-);
-const admin = new Schema(
-  {
-    login: String,
-    password: String
-  },
-  { versionKey: false }
-);
+// // установка схемы
+// const userScheme = new Schema(
+//   {
+//     ip: String,
+//     creationDate: String,
+//     internetProvider: String,
+//     hasPornography: Boolean,
+//     hasChildPornography: Boolean,
+//     geoData: Object,
+//     content: Object
+//   },
+//   { versionKey: false }
+// );
+// const admin = new Schema(
+//   {
+//     login: String,
+//     password: String
+//   },
+//   { versionKey: false }
+// );
 
-const User = mongoose.model("User", userScheme);
-const Admin = mongoose.model("Admin", admin);
+// const User = mongoose.model("User", userScheme);
+// const Admin = mongoose.model("Admin", admin);
 
 // (async function() {
 //   const url = await ngrok.connect(port);
@@ -144,177 +146,7 @@ app.post("/csvupload/upload", upload.single("filedata"), function(
     });
 });
 
-app.get("/", async function(request, respons) {
-  console.log(ngrok.getUrl());
-  let ip =
-    request.headers["x-forwarded-for"] ||
-    request.connection.remoteAddress ||
-    request.socket.remoteAddress ||
-    (request.connection.socket
-      ? request.connection.socket.remoteAddress
-      : null);
-  let information = {};
-  information.creationDate = new Date().toLocaleDateString();
-  await axios
-    .get(`http://ip-api.com/json/${ip}`)
-    .then(response => {
-      information.ip = response.data.query;
-      information.internetProvider = response.data.org;
-      information.hasPornography = false;
-      information.hasChildPornography = false;
-      information.geoData = {
-        country: response.data.country,
-        city: response.data.city,
-        lat: response.data.lat,
-        lon: response.data.lon
-      };
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  await axios
-    .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip}`)
-    .then(response => {
-      // let torrent_info = getData(response.data);
-      let torrent_info = functions.getData(response.data);
-      information.content = torrent_info;
-      for (let i = 0; i < information.content.length; i++) {
-        if (information.content[i].type == "Порно")
-          information.hasPornography = true;
-        if (information.content[i].type == "Детское порно")
-          information.hasChildPornography = true;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  console.log(
-    "Присоединился пользователь и смотрит свой IP: ",
-    ip,
-    "\n Из: ",
-    information.geoData.country,
-    " - ",
-    information.geoData.city
-  );
-  mongoose.connect(
-    "mongodb://localhost:27017/usersipdatabase",
-    { useNewUrlParser: true },
-    function(err) {
-      if (err) return console.log(err);
-      // Перед поиском зависимостей в базе данных
-      User.findOne({ ip: information.ip }, function(err, user) {
-        // Поиск элемента!
-        if (err) return console.log(err);
-        if (!user) {
-          // Отсутствие элемента и создание нового
-          const newUser = new User(information);
-          newUser.save(function(err) {
-            if (err) return console.log(err);
-          });
-        } else if (
-          user.creationDate.split(".")[1] !=
-          information.creationDate.split(".")[1]
-        ) {
-          //  Необходимо обновить информацию про элемент!
-          user.creationDate = information.creationDate;
-          user.content = information.content;
-          user.hasChildPornography = information.hasChildPornography;
-          user.hasPornography = information.hasPornography;
-          user.save(function(err) {
-            if (err) return handleError(err); // сохранили!
-          });
-        }
-      });
-    }
-  );
-
-  respons.render("index.ejs", information);
-});
-
-app.use("/ip", async function(request, respons) {
-  let ip_to_find;
-  let ip =
-    request.headers["x-forwarded-for"] ||
-    request.connection.remoteAddress ||
-    request.socket.remoteAddress ||
-    (request.connection.socket
-      ? request.connection.socket.remoteAddress
-      : null);
-  if (request.query.ip == undefined) {
-    ip_to_find = ip;
-  } else ip_to_find = request.query.ip;
-  let information = {};
-  await axios
-    .get(`http://ip-api.com/json/${ip_to_find}`)
-    .then(response => {
-      information.ip = ip_to_find;
-      information.internetProvider = response.data.org;
-      information.hasPornography = false;
-      information.hasChildPornography = false;
-      information.geoData = {
-        country: response.data.country,
-        city: response.data.city,
-        lat: response.data.lat,
-        lon: response.data.lon
-      };
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  await axios
-    .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip_to_find}`)
-    .then(response => {
-      // console.log(getData(response.data));
-      let torrent_info = functions.getData(response.data);
-      information.content = torrent_info;
-      for (let i = 0; i < information.content.length; i++) {
-        if (information.content[i].type == "Порно")
-          information.hasPornography = true;
-        if (information.content[i].type == "Детское порно")
-          information.hasChildPornography = true;
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  console.log(
-    `Присоединился пользователь ${ip} и смотрит чужой IP: `,
-    ip_to_find
-  );
-  information.creationDate = new Date().toLocaleDateString();
-  mongoose.connect(
-    "mongodb://localhost:27017/usersipdatabase",
-    { useNewUrlParser: true },
-    function(err) {
-      if (err) return console.log(err);
-      // Перед поиском зависимостей в базе данных
-      User.findOne({ ip: information.ip }, function(err, user) {
-        // Поиск элемента!
-        if (err) return console.log(err);
-        if (!user) {
-          // Отсутствие элемента и создание нового
-          const newUser = new User(information);
-          newUser.save(function(err) {
-            if (err) return console.log(err);
-          });
-        } else if (
-          user.creationDate.split(".")[1] !=
-          information.creationDate.split(".")[1]
-        ) {
-          //  Необходимо обновить информацию про элемент!
-          user.creationDate = information.creationDate;
-          user.content = information.content;
-          user.hasChildPornography = information.hasChildPornography;
-          user.hasPornography = information.hasPornography;
-          user.save(function(err) {
-            if (err) return handleError(err); // сохранили!
-          });
-        }
-      });
-    }
-  );
-  respons.render("ip.ejs", information);
-});
+app.use("/", ipRouter);
 
 // http://131f4a8d.ngrok.io/api/getOneIp?ip=188.163.96.186&token=tom
 app.get("/api/getOneIp", async function(request, respons) {
