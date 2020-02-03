@@ -1,5 +1,18 @@
+// const express = require("express");
+// const app = express();
+// const userRouter = require("./routes/userRouter.js");
+// const homeRouter = require("./routes/homeRouter.js");
+
+// app.use("/users", userRouter);
+// app.use("/", homeRouter);
+
+// app.use(function(req, res, next) {
+//   res.status(404).send("Not Found");
+// });
+
+// app.listen(8080);
+
 const axios = require("axios");
-const cheerio = require("cheerio");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -7,13 +20,14 @@ const csv = require("csv-parser");
 const fs = require("fs");
 const ngrok = require("ngrok");
 const mongoose = require("mongoose");
+const io = require("socket.io");
 
+const functions = require("./controllers/functions.js");
 const app = express();
 
 //Возможность парсить JSON на сервере
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 let port = 8080;
 url = "https://550462df.ngrok.io";
@@ -102,6 +116,7 @@ const run = async () => {
 //Роутинг
 
 // https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
+
 app.post("/csvupload/upload", upload.single("filedata"), function(
   request,
   respons,
@@ -160,7 +175,8 @@ app.get("/", async function(request, respons) {
   await axios
     .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip}`)
     .then(response => {
-      let torrent_info = getData(response.data);
+      // let torrent_info = getData(response.data);
+      let torrent_info = functions.getData(response.data);
       information.content = torrent_info;
       for (let i = 0; i < information.content.length; i++) {
         if (information.content[i].type == "Порно")
@@ -249,7 +265,7 @@ app.use("/ip", async function(request, respons) {
     .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip_to_find}`)
     .then(response => {
       // console.log(getData(response.data));
-      let torrent_info = getData(response.data);
+      let torrent_info = functions.getData(response.data);
       information.content = torrent_info;
       for (let i = 0; i < information.content.length; i++) {
         if (information.content[i].type == "Порно")
@@ -342,8 +358,7 @@ app.get("/api/getOneIp", async function(request, respons) {
   await axios
     .get(`https://iknowwhatyoudownload.com/ru/peer/?ip=${ip_to_find}`)
     .then(response => {
-      // console.log(getData(response.data));
-      let torrent_info = getData(response.data);
+      let torrent_info = functions.getData(response.data);
       information.content = torrent_info;
       for (let i = 0; i < information.content.length; i++) {
         if (information.content[i].type == "Порно")
@@ -485,28 +500,5 @@ app.use(function(req, res, next) {
 });
 
 // Функции
-let getData = html => {
-  data = [];
-  const $ = cheerio.load(html);
-  $(".table tbody .torrent_files").each((index, element) => {
-    let last = $(`.table tbody .date-column`)
-      .eq(index + index + 1)
-      .text();
-    data.push({
-      name: $(`.table tbody .torrent_files`)
-        .eq(index)
-        .text()
-        .replace(/\s+/g, " "),
-      size: $(`.table tbody .size-column`)
-        .eq(index)
-        .text(),
-      lastData: last,
-      type: $(`.table tbody .category-column`)
-        .eq(index)
-        .text()
-    });
-  });
-  return data;
-};
 
 run();
