@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const cookieSession = require("cookie-session");
-const crypto = require("crypto");
+const functions = require("../controllers/functions.js");
+
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
@@ -34,13 +34,6 @@ let admin = new Schema(
   },
   { versionKey: false }
 );
-// Math.round(new Date().valueOf() * Math.random()) + "";
-function hexpass(password) {
-  return crypto
-    .createHash("md5", Math.round(new Date().valueOf() * Math.random()) + "")
-    .update(password)
-    .digest("hex");
-}
 
 const User = mongoose.model("User", userScheme);
 const Admin = mongoose.model("Admin", admin);
@@ -83,21 +76,24 @@ module.exports = {
     );
   },
   adminDBFunc: async function(request) {
+    let userResult;
     await mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
       async function(err) {
         if (err) return console.log(err);
-        // let hex = hexpass(request.body.password);
         await Admin.findOne(
           {
             login: request.body.login,
-            password: hexpass(request.body.password)
+            password: functions.hex(request.body.password)
           },
           function(err, user) {
             // Поиск элемента!
             if (err) return console.log(err);
             if (user) {
+              // functions.appFunc(res => {
+              //   // console.log(request.session);
+              // });
               userResult = 200;
             } else {
               userResult = 404;

@@ -58,11 +58,3 @@ app.use(function(req, res, next) {
 });
 
 run();
-
-// var crypto = require("crypto");
-// var name = "revolman";
-// var hash = crypto
-//   .createHash("md5", Math.round(new Date().valueOf() * Math.random()) + "")
-//   .update("revolman")
-//   .digest("hex");
-// console.log(hash); // 9b74c9897bac770ffc029102a200c5de
