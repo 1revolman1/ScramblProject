@@ -9,8 +9,8 @@ exports.admin = function(request, respons) {
   respons.render("admin.ejs", { ip: ip });
 };
 exports.postAdmin = function(request, respons) {
-  let ip = functions.getIP(request);
   if (!request.body) return respons.sendStatus(400);
+  let ip = functions.getIP(request);
   database.adminDBFunc(request, (err, result) => {
     if (err) return console.log(err);
     else if (result == 200) respons.render("panel.ejs", { ip: ip });
