@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const cookieSession = require("cookie-session");
+const crypto = require("crypto");
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
@@ -7,7 +9,7 @@ mongoose.set("useUnifiedTopology", true);
 const Schema = mongoose.Schema;
 
 // установка схемы
-const userScheme = new Schema(
+let userScheme = new Schema(
   {
     ip: String,
     creationDate: String,
@@ -19,13 +21,26 @@ const userScheme = new Schema(
   },
   { versionKey: false }
 );
-const admin = new Schema(
+let admin = new Schema(
   {
-    login: String,
+    login: {
+      type: String,
+      unique: true,
+      index: true,
+      minlength: 4,
+      maxlength: 8
+    },
     password: String
   },
   { versionKey: false }
 );
+// Math.round(new Date().valueOf() * Math.random()) + "";
+function hexpass(password) {
+  return crypto
+    .createHash("md5", Math.round(new Date().valueOf() * Math.random()) + "")
+    .update(password)
+    .digest("hex");
+}
 
 const User = mongoose.model("User", userScheme);
 const Admin = mongoose.model("Admin", admin);
@@ -34,8 +49,8 @@ module.exports = {
   user: User,
   admin: Admin,
   mongo: mongoose,
-  userDBFunc: async function(information) {
-    await mongoose.connect(
+  userDBFunc: function(information) {
+    mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
       function(err) {
@@ -68,23 +83,24 @@ module.exports = {
     );
   },
   adminDBFunc: async function(request) {
-    let userResult;
     await mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
       async function(err) {
         if (err) return console.log(err);
+        // let hex = hexpass(request.body.password);
         await Admin.findOne(
-          { login: request.body.login, password: request.body.password },
+          {
+            login: request.body.login,
+            password: hexpass(request.body.password)
+          },
           function(err, user) {
             // Поиск элемента!
             if (err) return console.log(err);
             if (user) {
               userResult = 200;
-              // callback(null, 200);
             } else {
               userResult = 404;
-              // callback(null, 404);
             }
           }
         );
