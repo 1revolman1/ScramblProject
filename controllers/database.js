@@ -64,7 +64,7 @@ module.exports = {
       }
     );
   },
-  adminDBFunc: function(request) {
+  adminDBFunc: async function(request, callback) {
     mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
@@ -76,11 +76,9 @@ module.exports = {
             // Поиск элемента!
             if (err) return console.log(err);
             if (user) {
-              // response.render("panel.ejs", { ip: ip });
-              return 200;
+              callback(null, 200);
             } else {
-              // response.redirect("/admin");
-              return 400;
+              callback(null, 404);
             }
           }
         );

@@ -7,11 +7,14 @@ exports.admin = function(request, respons) {
   let ip = functions.getIP(request);
   respons.render("admin.ejs", { ip: ip });
 };
-exports.postAdmin = async function(request, respons) {
+exports.postAdmin = function(request, respons) {
   let ip = functions.getIP(request);
   if (!request.body) return respons.sendStatus(400);
-  let result = database.adminDBFunc(request);
-  console.log(result);
+  database.adminDBFunc(request, (err, result) => {
+    if (err) return console.log(err);
+    else if (result == 200) respons.render("panel.ejs", { ip: ip });
+    else respons.redirect("/admin");
+  });
 };
 exports.adminPanel = function(request, respons) {
   let ip = functions.getIP(request);
