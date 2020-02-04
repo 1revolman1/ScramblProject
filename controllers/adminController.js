@@ -1,3 +1,4 @@
+const io = require("socket.io");
 const functions = require("../controllers/functions.js");
 const database = require("../controllers/database.js");
 

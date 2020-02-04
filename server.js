@@ -2,8 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const ngrok = require("ngrok");
-// const io = require("socket.io");
-
 const ipRouter = require("./routes/ipRouter.js");
 const csvuploadRouter = require("./routes/csvuploadRouter.js");
 const apiRouter = require("./routes/apiRouter.js");
@@ -43,13 +41,12 @@ const run = async () => {
 };
 
 //Роутинг
-
-// https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
-
 app.use("/", ipRouter);
 app.use("/csvupload", csvuploadRouter);
 app.use("/api", apiRouter);
 app.use("/admin", adminRouter);
+
+// https://api.mylnikov.org/geolocation/wifi?bssid={wifi-bssid}
 
 //Обработчики
 app.use("/public", express.static("public"));
