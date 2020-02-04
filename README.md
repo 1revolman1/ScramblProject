@@ -1,7 +1,7 @@
 # ScramblProject
 
 It's student project about torrent vulnurability
-You need to understodd,that your Node JS need to be higher than 12.0.0
+You need to understodd,that your Node JS need to be higher than `12.0.0`
 
 ### Setup Guide
 
