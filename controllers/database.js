@@ -34,8 +34,8 @@ module.exports = {
   user: User,
   admin: Admin,
   mongo: mongoose,
-  userDBFunc: function(information) {
-    mongoose.connect(
+  userDBFunc: async function(information) {
+    await mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
       function(err) {

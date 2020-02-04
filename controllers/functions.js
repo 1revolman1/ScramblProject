@@ -2,10 +2,10 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 
 module.exports = {
-  parseData: function(html) {
+  parseData: async function(html) {
     data = [];
     const $ = cheerio.load(html);
-    $(".table tbody .torrent_files").each((index, element) => {
+    await $(".table tbody .torrent_files").each((index, element) => {
       let last = $(`.table tbody .date-column`)
         .eq(index + index + 1)
         .text();
