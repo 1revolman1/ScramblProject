@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
 //Настройка базы данных
 const Schema = mongoose.Schema;
 
@@ -64,29 +67,29 @@ module.exports = {
       }
     );
   },
-  adminDBFunc: async function(request, callback) {
-    mongoose.connect(
+  adminDBFunc: async function(request) {
+    let userResult;
+    await mongoose.connect(
       "mongodb://localhost:27017/usersipdatabase",
       { useNewUrlParser: true },
-      function(err) {
+      async function(err) {
         if (err) return console.log(err);
-        Admin.findOne(
+        await Admin.findOne(
           { login: request.body.login, password: request.body.password },
           function(err, user) {
             // Поиск элемента!
             if (err) return console.log(err);
             if (user) {
-              callback(null, 200);
+              userResult = 200;
+              // callback(null, 200);
             } else {
-              callback(null, 404);
+              userResult = 404;
+              // callback(null, 404);
             }
           }
         );
       }
     );
+    return userResult;
   }
 };
-// module.exports = User;
-
-// module.exports = Admin;
-// module.exports = mongoose;
