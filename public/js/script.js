@@ -42,6 +42,39 @@ document.addEventListener("DOMContentLoaded", function() {
     //     }
     //   });
   }
-  //   if (document.querySelectorAll(".csv-uploaded").length > 0) {
-  //   }
+  if (document.querySelectorAll(".csv-uploaded").length > 0) {
+    $("tr").on("click", function(e) {
+      let controller = new AbortController();
+      let ip = e.currentTarget.children[1].textContent.split(":")[0];
+      try {
+        fetch(`${location.origin}/api/getOneIp?ip=${ip}&token=revolman`, {
+          signal: controller.signal
+        })
+          .then(res => res.json())
+          .then(res => {
+            // console.log(res, e);
+            // let div = `<div class="clicked-content">gfdsgfdg</div>`;
+            // e.currentTarget.outerHTML += div;
+          });
+      } catch (err) {
+        if (err.name == "AbortError") {
+          // обработать ошибку от вызова abort()
+          console.log("Перервано");
+        } else {
+          throw err;
+        }
+      }
+
+      // let response = await fetch(
+      //   `${location.origin}/api/getOneIp?ip=${ip}&token=revolman`,
+      //   {
+      //     signal: controller.signal
+      //   }
+      // );
+      // let json = await response.json();
+      // console.log(json);
+      // .then(res => res.json())
+      // .then(res => console.log(res));
+    });
+  }
 });
