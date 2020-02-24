@@ -100,3 +100,8 @@ exports.logout = function(request, respons) {
   request.flash("success_msg", "You are logged out");
   respons.redirect("/admin");
 };
+exports.logout = function(request, respons) {
+  request.logout();
+  request.flash("success_msg", "You are logged out");
+  respons.redirect("/admin");
+};
