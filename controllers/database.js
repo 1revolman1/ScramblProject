@@ -21,19 +21,6 @@ let userScheme = new Schema(
   },
   { versionKey: false }
 );
-// let admin = new Schema(
-//   {
-//     login: {
-//       type: String,
-//       unique: true,
-//       index: true,
-//       minlength: 4,
-//       maxlength: 8
-//     },
-//     password: String
-//   },
-//   { versionKey: false }
-// );
 const admin = new mongoose.Schema(
   {
     name: {
