@@ -4,10 +4,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const db = require("../controllers/database");
 const Admin = db.admin;
-<<<<<<< HEAD
 const MongoLink = db.MongoLink;
-=======
->>>>>>> 349d9fbb95d3c7da58dfd1993a3114a12aef3f9c
 url = "https://550462df.ngrok.io";
 
 exports.admin = function(request, respons) {
