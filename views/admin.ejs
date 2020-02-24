@@ -43,11 +43,11 @@
               alt="User Icon"
             />
           </div>
-
+          <%-include("errors.ejs")%>
           <!-- Login Form -->
           <!-- action="/admin" method="post" -->
           <form action="/admin" method="post">
-             <%-include("errors.ejs")%>
+            
             <input
               type="text"
               id="login"

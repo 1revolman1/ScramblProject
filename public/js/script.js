@@ -77,4 +77,12 @@ document.addEventListener("DOMContentLoaded", function() {
       // .then(res => console.log(res));
     });
   }
+  if(document.querySelectorAll(".panel-for-user").length>0){
+    	$("li").click(function(e) {
+			  e.preventDefault();
+			  $("li").removeClass("selected");
+			  $(this).addClass("selected");
+			});
+
+  }
 });
