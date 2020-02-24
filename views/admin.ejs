@@ -47,6 +47,7 @@
           <!-- Login Form -->
           <!-- action="/admin" method="post" -->
           <form action="/admin" method="post">
+             <%-include("errors.ejs")%>
             <input
               type="text"
               id="login"
@@ -72,6 +73,7 @@
 
           <!-- Remind Passowrd -->
           <div id="formFooter">
+           <p class="lead mt-4">Do not have any Account? <a href="/admin/register">Register</a></p>
             <a class="underlineHover" href="#">Forgot Password?</a>
           </div>
         </div>
