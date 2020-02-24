@@ -5,13 +5,36 @@ const ipRouter = require("./routes/ipRouter.js");
 const csvuploadRouter = require("./routes/csvuploadRouter.js");
 const apiRouter = require("./routes/apiRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
+const expressLayouts = require("express-ejs-layouts");
+const passport = require("passport");
+const flash = require("connect-flash");
+const session = require("express-session");
 const app = express();
-
+require("./controllers/passport")(passport);
 let port = 8080;
 
 //Возможность парсить JSON на сервере
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Express session
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true
+  })
+);
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+// Connect flash
+app.use(flash());
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 // (async function() {
 //   const url = await ngrok.connect(port);
@@ -49,6 +72,7 @@ app.use("/admin", adminRouter);
 
 //Обработчики
 app.use("/public", express.static("public"));
+app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("json spaces", 40);
 

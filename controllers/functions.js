@@ -1,9 +1,5 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const express = require("express");
-
-const crypto = require("crypto");
-let app = express();
 module.exports = {
   parseData: function(html) {
     data = [];
@@ -76,15 +72,5 @@ module.exports = {
       });
     return information;
     // console.log(information);
-  },
-  hex: function hexpass(password) {
-    return crypto
-      .createHash("md5", Math.round(new Date().valueOf() * Math.random()) + "")
-      .update(password)
-      .digest("hex");
   }
 };
-//  appFunc: function appF(callback) {
-//    callback(app);
-//    // console.log(app.session);
-//  }
