@@ -41,7 +41,6 @@ exports.registrationPOST = function(request, respons) {
       login,
       password,
       password2
-<<<<<<< HEAD
     });
   } else {
     db.mongo.connect(MongoLink, { useNewUrlParser: true }, function(err) {
@@ -83,53 +82,6 @@ exports.registrationPOST = function(request, respons) {
         }
       });
     });
-=======
-    });
-  } else {
-    db.mongo.connect(
-      "mongodb://localhost:27017/usersipdatabase",
-      { useNewUrlParser: true },
-      function(err) {
-        if (err) return console.log(err);
-        // Перед поиском зависимостей в базе данных
-        Admin.findOne({ login: login }).then(user => {
-          if (user) {
-            errors.push({ msg: "Email already exists" });
-            respons.render("register", {
-              errors,
-              name,
-              login,
-              password,
-              password2
-            });
-          } else {
-            const newUser = new Admin({
-              name,
-              login,
-              password
-            });
-
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) throw err;
-                newUser.password = hash;
-                newUser
-                  .save()
-                  .then(user => {
-                    request.flash(
-                      "success_msg",
-                      "You are now registered and can log in"
-                    );
-                    respons.redirect("/admin/panel");
-                  })
-                  .catch(err => console.log(err));
-              });
-            });
-          }
-        });
-      }
-    );
->>>>>>> 349d9fbb95d3c7da58dfd1993a3114a12aef3f9c
   }
 };
 exports.postAdmin = function(request, respons, next) {
@@ -141,11 +93,7 @@ exports.postAdmin = function(request, respons, next) {
 };
 exports.adminPanel = function(request, respons) {
   let ip = functions.getIP(request);
-<<<<<<< HEAD
   respons.render("panel.ejs", { ip: ip, logout: true });
-=======
-  respons.render("panel.ejs", { ip: ip,logout:true});
->>>>>>> 349d9fbb95d3c7da58dfd1993a3114a12aef3f9c
 };
 exports.logout = function(request, respons) {
   request.logout();
