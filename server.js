@@ -82,3 +82,5 @@ app.use(function(req, res, next) {
 });
 
 run();
+
+exports.mongoLink="";
