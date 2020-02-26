@@ -366,4 +366,9 @@ footer{
 }
 
 /*ПАНЕЛЬ ДЛЯ ЮЗЕРА*/
-
+.panel-for-user{
+  padding-top: 0;
+}
+.panel-for-user .header-class{
+  margin: unset !important;
+}

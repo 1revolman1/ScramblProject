@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded",function(e){
+    if(document.querySelector(".panel-for-user")){
+        document.querySelector(".adminPanel-with-tabs").style.marginTop=`${document.querySelector("header").offsetHeight}px`;
+    }
+})
+
 var socket = io();
 socket.on('news', function (data) {
     console.log(data);
