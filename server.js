@@ -10,6 +10,8 @@ const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const app = express();
+const http = require('http').createServer(app);
+require("./routes/panelSocketRouter")(http);
 require("./controllers/passport")(passport);
 let port = 8080;
 
@@ -55,7 +57,7 @@ app.use(function(req, res, next) {
 // })();
 
 const run = async () => {
-  await app.listen(port, () =>
+  await http.listen(port, () =>
     console.log(
       `\nServer waiting for connection and listening on: ${port}\nUse this link to connect to this server:`
     )
@@ -82,5 +84,3 @@ app.use(function(req, res, next) {
 });
 
 run();
-
-exports.mongoLink="";

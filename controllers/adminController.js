@@ -1,4 +1,3 @@
-const io = require("socket.io");
 const functions = require("../controllers/functions.js");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");

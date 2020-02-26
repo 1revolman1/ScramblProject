@@ -32,8 +32,8 @@
           <ul class="cd-tabs__list">
             <li>
               <a
-                href="#tab-inbox"
-                class="cd-tabs__item cd-tabs__item--selected"
+                href="#tab-AllTorrent"
+                class="button-AllTorrent cd-tabs__item cd-tabs__item--selected"
               >
                 <svg aria-hidden="true" class="icon icon--xs">
                   <path
@@ -44,7 +44,7 @@
               </a>
             </li>
             <li>
-              <a href="#tab-new" class="cd-tabs__item">
+              <a href="#tab-AllUsersAdmin" class="button-AllUsersAdmin cd-tabs__item">
                 <svg aria-hidden="true" class="icon icon--xs">
                   <path
                     d="M12.7,0.3c-0.4-0.4-1-0.4-1.4,0l-7,7C4.1,7.5,4,7.7,4,8v3c0,0.6,0.4,1,1,1h3 c0.3,0,0.5-0.1,0.7-0.3l7-7c0.4-0.4,0.4-1,0-1.4L12.7,0.3z M7.6,10H6V8.4l6-6L13.6,4L7.6,10z"
@@ -53,7 +53,7 @@
                     d="M15,10c-0.6,0-1,0.4-1,1v3H2V2h3c0.6,0,1-0.4,1-1S5.6,0,5,0H1C0.4,0,0,0.4,0,1v14c0,0.6,0.4,1,1,1h14 c0.6,0,1-0.4,1-1v-4C16,10.4,15.6,10,15,10z"
                   ></path>
                 </svg>
-                <span>All Users</span>
+                <span>All Users Admin</span>
               </a>
             </li>
             <li>
@@ -104,10 +104,34 @@
         </nav>
         <ul class="cd-tabs__panels">
           <li
-            id="tab-inbox"
+            id="tab-AllTorrent"
             class="cd-tabs__panel cd-tabs__panel--selected text-component"
           >
-            <p>
+           <div class="form-group">
+              <table
+                class="table table-bordered col-md-12  col-xm-6 table-hover table-responsive-sm table-responsive-md table-responsive-lg"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">Страна/Город</th>
+                    <th scope="col">Размер</th>
+                    <th scope="col">Последнее скачивание</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td class="name-of-torrent">Джон Уик</td>
+                    <td>Фильм</td>
+                    <td>7.30Гб</td>
+                    <td>5 янв. 2020 г., 21:10:23</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <p>
               Inbox Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Earum recusandae rem animi accusamus quisquam reprehenderit sed
               voluptates, numquam, quibusdam velit dolores repellendus tempora
@@ -118,9 +142,9 @@
               Earum recusandae rem animi accusamus quisquam reprehenderit sed
               voluptates, numquam, quibusdam velit dolores repellendus tempora
               corrupti accusantium obcaecati voluptate totam eveniet laboriosam?
-            </p>
+            </p> -->
           </li>
-          <li id="tab-new" class="cd-tabs__panel text-component">
+          <li id="tab-AllUsersAdmin" class="cd-tabs__panel text-component">
             <p>
               New Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
               a voluptatibus, ex odit totam cumque nihil eos asperiores ea,
@@ -240,7 +264,8 @@
     <!-- cd-tabs -->
     <%- include("footer.ejs") %>
     <script src="/public/js/util.js"></script>
-    <!-- util functions included in the CodyHouse framework -->
     <script src="/public/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="/public/js/socket.js"></script>
   </body>
 </html>
