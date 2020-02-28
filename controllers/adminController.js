@@ -3,7 +3,9 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const db = require("../controllers/database");
 const Admin = db.admin;
+const User = db.user;
 const MongoLink = db.MongoLink;
+const Mongoose = db.mongo;
 url = "https://550462df.ngrok.io";
 
 exports.admin = function(request, respons) {
@@ -89,7 +91,15 @@ exports.postAdmin = function(request, respons, next) {
 };
 exports.adminPanel = function(request, respons) {
   let ip = functions.getIP(request);
-  respons.render("panel.ejs", { ip: ip, logout: true });
+  Mongoose.connect(MongoLink, { useNewUrlParser: true }, function(err) {
+    console.log("Finnd in MONGOOSE");
+    if (err) return console.log(err);
+    User.find({}, function(err, user) {
+      if (err) return console.log(err);
+      //   console.log(user);
+      respons.render("panel.ejs", { ip: ip, logout: true, torrentUser: user });
+    });
+  });
 };
 exports.logout = function(request, respons) {
   request.logout();

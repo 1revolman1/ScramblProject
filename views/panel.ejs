@@ -127,7 +127,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <!-- <tr>
                     <th scope="row">1</th>
                     <td class="name-of-torrent">1.1.1.1</td>
                     <td>Украина/Запорожье</td>
@@ -136,17 +136,21 @@
                     <td>Да</td>
                     <td>Да</td>
                     <td>23/11/20</td>
-                  </tr>
+                  </tr> -->
+                <% for(let i=0;i<torrentUser.length;i++)  {%>
                   <tr>
-                    <th scope="row">1</th>
-                    <td class="name-of-torrent">1.1.1.1</td>
-                    <td>Украина/Запорожье</td>
-                    <td>Киевстар</td>
-                    <td>6</td>
-                    <td>Да</td>
-                    <td>Да</td>
-                    <td>23/11/20</td>
+                    <th scope="row"><%=i+1%></th>
+                    <td class="name-of-torrent"><%=torrentUser[i].ip%></td>
+                    <td><%=torrentUser[i].geoData.country%>/<%=torrentUser[i].geoData.city%></td>
+                    <td><%=torrentUser[i].internetProvider == ""
+                          ? "Неизвестен"
+                          : torrentUser[i].internetProvider%></td>
+                    <td>9</td>
+                    <td><%torrentUser[i].hasPornography ? "Да" : "Нет"%></td>
+                    <td><%=torrentUser[i].hasChildPornography ? "Да" : "Нет"%></td>
+                    <td><%=torrentUser[i].creationDate%></td>
                   </tr>
+                  <%} %>
                 </tbody>
               </table>
             </div>

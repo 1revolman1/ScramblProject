@@ -17,7 +17,9 @@ socket.on("GetAllTorrent", function(data) {
   //     console.log(element.geoData.country);
   //     //   element.geoData.country
   //   });
-
+  // torrentUser.internetProvider == ""
+  //     ? "Неизвестен"
+  //     : torrentUser.internetProvider
   data.user.forEach((torrentUser, index) => {
     text += `<tr>
                       <th scope="row">${index + 1}</th>
