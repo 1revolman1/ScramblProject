@@ -61,7 +61,7 @@ pre,
 .form-control {
   border-radius: 0.25rem 0 0 0.25rem;
 }
-footer{
+footer {
   margin-top: 50px;
 }
 /* footer {
@@ -85,19 +85,13 @@ footer{
 .admin-panel .container {
   /* margin-top: 200px; */
 }
-.admin-panel body {
-  /* font-family: "Poppins", sans-serif; */
-  height: 100vh;
-}
-
-.admin-panel a {
+.admin-panel .container a {
   color: #92badd;
   display: inline-block;
   text-decoration: none;
   font-weight: 400;
 }
-
-.admin-panel h2 {
+.admin-panel .container h2 {
   text-align: center;
   font-size: 16px;
   font-weight: 600;
@@ -106,10 +100,15 @@ footer{
   margin: 40px 8px 10px 8px;
   color: #cccccc;
 }
-
-/* STRUCTURE */
-
-.admin-panel .wrapper {
+.admin-panel .container .fadeInDown {
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.admin-panel .container .wrapper {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -118,8 +117,7 @@ footer{
   min-height: 100%;
   padding: 20px;
 }
-
-.admin-panel #formContent {
+.admin-panel .container .wrapper #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background: #fff;
@@ -132,36 +130,64 @@ footer{
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   text-align: center;
 }
-
-.admin-panel #formFooter {
-  background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
-  padding: 25px;
-  text-align: center;
-  -webkit-border-radius: 0 0 10px 10px;
-  border-radius: 0 0 10px 10px;
+.admin-panel .container .wrapper #formContent .fadeIn {
+  opacity: 0;
+  -webkit-animation: fadeIn ease-in 1;
+  -moz-animation: fadeIn ease-in 1;
+  animation: fadeIn ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
 }
-@media screen and (max-width: 480px) {
-  .fadeIn {
-    padding: 15px 30px !important;
-  }
+.admin-panel .container .wrapper #formContent .fadeIn.first {
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
-/* TABS */
-
-.admin-panel h2.inactive {
+.admin-panel .container .wrapper #formContent .fadeIn.second {
+  -webkit-animation-delay: 0.6s;
+  -moz-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}
+.admin-panel .container .wrapper #formContent .fadeIn.third {
+  -webkit-animation-delay: 0.8s;
+  -moz-animation-delay: 0.8s;
+  animation-delay: 0.8s;
+}
+.admin-panel .container .wrapper #formContent .fadeIn.fourth {
+  -webkit-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
+}
+.admin-panel .container .wrapper #formContent .underlineHover:after {
+  display: block;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 2px;
+  background-color: #56baed;
+  content: "";
+  transition: width 0.2s;
+}
+.admin-panel .container .wrapper #formContent .underlineHover:hover {
+  color: #0d0d0d;
+}
+.admin-panel .container .wrapper #formContent .underlineHover:hover:after {
+  width: 100%;
+}
+.admin-panel .container .wrapper #formContent h2.inactive {
   color: #cccccc;
 }
-
-.admin-panel h2.active {
+.admin-panel .container .wrapper #formContent h2.active {
   color: #0d0d0d;
   border-bottom: 2px solid #5fbae9;
 }
-
-/* FORM TYPOGRAPHY*/
-
-.admin-panel input[type="button"],
-.admin-panel input[type="submit"],
-.admin-panel input[type="reset"] {
+.admin-panel .container .wrapper #formContent input[type="button"],
+.admin-panel .container .wrapper #formContent input[type="submit"],
+.admin-panel .container .wrapper #formContent input[type="reset"] {
   background-color: #56baed;
   border: none;
   color: white;
@@ -182,25 +208,22 @@ footer{
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
-.admin-panel input[type="button"]:hover,
-.admin-panel input[type="submit"]:hover,
-.admin-panel input[type="reset"]:hover {
+.admin-panel .container .wrapper #formContent input[type="button"]:hover,
+.admin-panel .container .wrapper #formContent input[type="submit"]:hover,
+.admin-panel .container .wrapper #formContent input[type="reset"]:hover {
   background-color: #39ace7;
 }
-
-.admin-panel input[type="button"]:active,
-.admin-panel input[type="submit"]:active,
-.admin-panel input[type="reset"]:active {
+.admin-panel .container .wrapper #formContent input[type="button"]:active,
+.admin-panel .container .wrapper #formContent input[type="submit"]:active,
+.admin-panel .container .wrapper #formContent input[type="reset"]:active {
   -moz-transform: scale(0.95);
   -webkit-transform: scale(0.95);
   -o-transform: scale(0.95);
   -ms-transform: scale(0.95);
   transform: scale(0.95);
 }
-
-.admin-panel input[type="text"],
-.admin-panel input[type="password"] {
+.admin-panel .container .wrapper #formContent input[type="text"],
+.admin-panel .container .wrapper #formContent input[type="password"] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
@@ -220,30 +243,37 @@ footer{
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
 }
-
-.admin-panel input[type="text"]:focus,
-.admin-panel input[type="password"]:focus {
+.admin-panel .container .wrapper #formContent input[type="text"]:focus,
+.admin-panel .container .wrapper #formContent input[type="password"]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
-
-.admin-panel input[type="text"]:placeholder,
-.admin-panel input[type="password"]:placeholder {
+.admin-panel .container .wrapper #formContent input[type="text"]:placeholder,
+.admin-panel
+  .container
+  .wrapper
+  #formContent
+  input[type="password"]:placeholder {
   color: #cccccc;
 }
-
-/* ANIMATIONS */
-
-/* Simple CSS3 Fade-in-down Animation */
-.admin-panel .fadeInDown {
-  -webkit-animation-name: fadeInDown;
-  animation-name: fadeInDown;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+.admin-panel .container .wrapper #formContent #formFooter {
+  background-color: #f6f6f6;
+  border-top: 1px solid #dce8f1;
+  padding: 25px;
+  text-align: center;
+  -webkit-border-radius: 0 0 10px 10px;
+  border-radius: 0 0 10px 10px;
+}
+.admin-panel body {
+  /* font-family: "Poppins", sans-serif; */
+  height: 100vh;
 }
 
+@media screen and (max-width: 480px) {
+  .fadeIn {
+    padding: 15px 30px !important;
+  }
+}
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -256,7 +286,6 @@ footer{
     transform: none;
   }
 }
-
 @keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -269,7 +298,6 @@ footer{
     transform: none;
   }
 }
-
 /* Simple CSS3 Fade-in Animation */
 @-webkit-keyframes fadeIn {
   from {
@@ -296,65 +324,6 @@ footer{
   }
 }
 
-.admin-panel .fadeIn {
-  opacity: 0;
-  -webkit-animation: fadeIn ease-in 1;
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-}
-
-.admin-panel .fadeIn.first {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-
-.admin-panel .fadeIn.second {
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-
-.admin-panel .fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-
-.admin-panel .fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
-
-/* Simple CSS3 Fade-in Animation */
-.admin-panel .underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
-
-.admin-panel .underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.admin-panel .underlineHover:hover:after {
-  width: 100%;
-}
-
 /* OTHERS */
 
 *:focus {
@@ -366,9 +335,9 @@ footer{
 }
 
 /*ПАНЕЛЬ ДЛЯ ЮЗЕРА*/
-.panel-for-user{
+.panel-for-user {
   padding-top: 0;
 }
-.panel-for-user .header-class{
+.panel-for-user .header-class {
   margin: unset !important;
 }

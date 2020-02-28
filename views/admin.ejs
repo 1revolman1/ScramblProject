@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="admin-panel" lang="en" ip="<%=ip %>">
+<html class="" lang="en" ip="<%=ip %>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,12 +11,6 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/public/css/style.css" />
-
-    <link
-      href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      rel="stylesheet"
-      id="bootstrap-css"
-    />
     <link
       rel="shortcut icon"
       href="/public/image/favicon.ico"
@@ -25,7 +19,7 @@
     <title>Torrent discard</title>
   </head>
 
-  <body class="admin">
+  <body class="admin admin-panel">
     <!-- Header -->
     <%- include("header.ejs")%>
     <!--Workplace -->
@@ -47,7 +41,6 @@
           <!-- Login Form -->
           <!-- action="/admin" method="post" -->
           <form action="/admin" method="post">
-            
             <input
               type="text"
               id="login"
@@ -73,7 +66,9 @@
 
           <!-- Remind Passowrd -->
           <div id="formFooter">
-           <p class="lead mt-4">Do not have any Account? <a href="/admin/register">Register</a></p>
+            <p class="lead mt-4">
+              Do not have any Account? <a href="/admin/register">Register</a>
+            </p>
             <a class="underlineHover" href="#">Forgot Password?</a>
           </div>
         </div>
