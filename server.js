@@ -13,7 +13,7 @@ const app = express();
 const http = require("http").createServer(app);
 // require("./routes/panelSocketRouter")(http);
 require("./controllers/passport")(passport);
-let port = 8080;
+let port = process.env.PORT || 8080;
 
 //Возможность парсить JSON на сервере
 app.use(bodyParser.json());
