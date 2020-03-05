@@ -42,6 +42,11 @@ document.addEventListener("DOMContentLoaded", function() {
     //     }
     //   });
   }
+  if (document.querySelector(".panel-for-user")) {
+    document.querySelector(".adminPanel-with-tabs").style.marginTop = `${
+      document.querySelector("header").offsetHeight
+    }px`;
+  }
   if (document.querySelectorAll(".csv-uploaded").length > 0) {
     $("tr").on("click", function(e) {
       let controller = new AbortController();
@@ -77,12 +82,11 @@ document.addEventListener("DOMContentLoaded", function() {
       // .then(res => console.log(res));
     });
   }
-  if(document.querySelectorAll(".panel-for-user").length>0){
-    	$("li").click(function(e) {
-			  e.preventDefault();
-			  $("li").removeClass("selected");
-			  $(this).addClass("selected");
-			});
-
+  if (document.querySelectorAll(".panel-for-user").length > 0) {
+    $("li").click(function(e) {
+      e.preventDefault();
+      $("li").removeClass("selected");
+      $(this).addClass("selected");
+    });
   }
 });

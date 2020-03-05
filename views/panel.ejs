@@ -145,9 +145,11 @@
                     <td><%=torrentUser[i].internetProvider == ""
                           ? "Неизвестен"
                           : torrentUser[i].internetProvider%></td>
-                    <td>9</td>
-                    <td><%torrentUser[i].hasPornography ? "Да" : "Нет"%></td>
+                    <td><%=torrentUser[i].content.length==0?"0":torrentUser[i].content.length%></td>
+                    
+                    <td><%=torrentUser[i].hasPornography ? "Да" : "Нет"%></td>
                     <td><%=torrentUser[i].hasChildPornography ? "Да" : "Нет"%></td>
+                    <!-- <td>Child</td> -->
                     <td><%=torrentUser[i].creationDate%></td>
                   </tr>
                   <%} %>
@@ -156,20 +158,28 @@
             </div>
           </li>
           <li id="tab-AllUsersAdmin" class="cd-tabs__panel text-component">
-            <p>
-              New Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
-              a voluptatibus, ex odit totam cumque nihil eos asperiores ea,
-              labore rerum. Doloribus tenetur quae impedit adipisci, laborum
-              dolorum eaque ratione quaerat, eos dicta consequuntur atque ex
-              facere voluptate cupiditate incidunt.
-            </p>
-            <p>
-              New Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
-              a voluptatibus, ex odit totam cumque nihil eos asperiores ea,
-              labore rerum. Doloribus tenetur quae impedit adipisci, laborum
-              dolorum eaque ratione quaerat, eos dicta consequuntur atque ex
-              facere voluptate cupiditate incidunt.
-            </p>
+          <div class="form-group">
+            <table
+              class="table table-bordered col-md-12  col-xm-6 table-hover table-responsive-sm table-responsive-md table-responsive-lg">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Имя</th>
+                  <th scope="col">Логин</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <% for(let i=0;i<AllAdmins.length;i++)  {%>
+                <tr>
+                  <th scope="row"><%=i+1%></th>
+                  <td class="name-of-torrent"><%=AllAdmins[i].name%></td>
+                  <td><%=AllAdmins[i].login%></td>
+                </tr>
+                <%} %>
+              </tbody>
+            </table>
+          </div>
           </li>
           <li id="tab-gallery" class="cd-tabs__panel text-component">
             <p>

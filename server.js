@@ -10,8 +10,8 @@ const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const app = express();
-const http = require('http').createServer(app);
-require("./routes/panelSocketRouter")(http);
+const http = require("http").createServer(app);
+// require("./routes/panelSocketRouter")(http);
 require("./controllers/passport")(passport);
 let port = 8080;
 

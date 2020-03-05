@@ -97,8 +97,20 @@ exports.adminPanel = function(request, respons) {
     User.find({}, function(err, user) {
       if (err) return console.log(err);
       //   console.log(user);
-      respons.render("panel.ejs", { ip: ip, logout: true, torrentUser: user });
-    });
+      // respons.render("panel.ejs", { ip: ip, logout: true, torrentUser: user });
+      return user;
+    }).then(AllTorrent =>
+      Admin.find({}, function(err, admin) {
+        if (err) return console.log(err);
+        // console.log(admin);
+        respons.render("panel.ejs", {
+          ip: ip,
+          logout: true,
+          torrentUser: AllTorrent,
+          AllAdmins: admin
+        });
+      })
+    );
   });
 };
 exports.logout = function(request, respons) {
