@@ -89,4 +89,9 @@ document.addEventListener("DOMContentLoaded", function() {
       $(this).addClass("selected");
     });
   }
+  if (document.querySelectorAll(".connectivity").length > 0) {
+    document.querySelector(
+      "pre"
+    ).innerText = `https://${window.location.host}/api/getOneIp?ip={ip}&token={key}`;
+  }
 });
