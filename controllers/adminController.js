@@ -92,17 +92,13 @@ exports.postAdmin = function(request, respons, next) {
 exports.adminPanel = function(request, respons) {
   let ip = functions.getIP(request);
   Mongoose.connect(MongoLink, { useNewUrlParser: true }, function(err) {
-    console.log("Finnd in MONGOOSE");
     if (err) return console.log(err);
     User.find({}, function(err, user) {
       if (err) return console.log(err);
-      //   console.log(user);
-      // respons.render("panel.ejs", { ip: ip, logout: true, torrentUser: user });
       return user;
     }).then(AllTorrent =>
       Admin.find({}, function(err, admin) {
         if (err) return console.log(err);
-        // console.log(admin);
         respons.render("panel.ejs", {
           ip: ip,
           logout: true,

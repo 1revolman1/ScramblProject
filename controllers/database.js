@@ -17,8 +17,14 @@ let userScheme = new Schema(
     internetProvider: String,
     hasPornography: Boolean,
     hasChildPornography: Boolean,
-    geoData: Object,
-    content: Object
+    geoData: {
+      type: Object,
+      default: "Underfiend"
+    },
+    content: {
+      type: Object,
+      default: "Underfiend"
+    }
   },
   { versionKey: false }
 );
