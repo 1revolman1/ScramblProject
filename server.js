@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors')
 const ngrok = require("ngrok");
 const ipRouter = require("./routes/ipRouter.js");
 const csvuploadRouter = require("./routes/csvuploadRouter.js");
@@ -16,6 +17,7 @@ require("./controllers/passport")(passport);
 let port = process.env.PORT || 8080;
 
 //Возможность парсить JSON на сервере
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Express session
